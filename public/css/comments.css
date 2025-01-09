@@ -1,0 +1,188 @@
+.tweetCommentsContainer {
+    background-color: rgba(0, 0, 0, 0.98);
+    backdrop-filter: blur(15px);
+    position: fixed;
+    z-index: 3;
+    width: 100%;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.currentTweetCommentsContainer {
+    background-color: #050505;
+    border: 1px solid #1a1a1a;
+    border-radius: 8px;
+    padding: 20px;
+    max-width: 450px;
+    width: 90%;
+    height: 50vh;
+    margin: 40px 0;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.userComment {
+    position: relative;
+    background-color: #0a0a0a;
+    border: 1px solid #1a1a1a;
+    border-radius: 6px;
+    padding: 12px;
+    margin: 6px 0;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+.userComment:hover {
+    transform: translateX(3px);
+    border-color: #222;
+    background-color: #0f0f0f;
+}
+
+.userComment .userCommentContent {
+    color: #999;
+    font-size: 14px;
+    line-height: 1.4;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+}
+
+.commentHeader {
+    display: flex;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.commentUserImg {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.commentUserName {
+    color: #666;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Remove unused styles */
+.commentActions,
+.commentDeleteBtn,
+.commentEditBtn,
+.editCommentInput {
+    display: none;
+}
+
+.addCommentContainer {
+    background-color: #050505;
+    border-top: 1px solid #1a1a1a;
+    padding: 15px;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 500px;
+    display: flex;
+    gap: 10px;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.addCommentInput {
+    background-color: #0a0a0a;
+    color: #fff;
+    border: 1px solid #1a1a1a;
+    border-radius: 8px;
+    padding: 12px;
+    width: 100%;
+    font-size: 14px;
+    font-weight: 500;
+    resize: none;
+    transition: all 0.3s ease;
+}
+
+.addCommentInput:focus {
+    border-color: #333;
+    background-color: #151515;
+    outline: none;
+}
+
+.addCommentBtn {
+    background-color: #111;
+    color: #888;
+    border: 1px solid #222;
+    border-radius: 8px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+}
+
+.addCommentBtn:hover {
+    background-color: #151515;
+    border-color: #333;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+.addCommentBtn .iconify {
+    font-size: 20px;
+}
+
+.closeCommentsContainer {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #111;
+    color: #ff4444;
+    border: 1px solid #222;
+    border-radius: 8px;
+    padding: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 4;
+}
+
+.closeCommentsContainer:hover {
+    background-color: #ff4444;
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+.noCommentsContainer {
+    text-align: left;
+    color: #555;
+    padding: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    margin: 10px 0;
+}
+
+/* Custom Scrollbar */
+.currentTweetCommentsContainer::-webkit-scrollbar {
+    width: 4px;
+}
+
+.currentTweetCommentsContainer::-webkit-scrollbar-track {
+    background: #0a0a0a;
+}
+
+.currentTweetCommentsContainer::-webkit-scrollbar-thumb {
+    background: #222;
+    border-radius: 2px;
+}
+
+.currentTweetCommentsContainer::-webkit-scrollbar-thumb:hover {
+    background: #333;
+}

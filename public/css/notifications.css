@@ -1,0 +1,36 @@
+.notification {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    padding: 10px 20px;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    transform: translateX(150%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    min-width: 200px;
+    max-width: 300px;
+    text-align: center;
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification.success {
+    background-color: #1a472a;
+    border-left: 4px solid #2ecc71;
+}
+
+.notification.error {
+    background-color: #4a1515;
+    border-left: 4px solid #e74c3c;
+}
+
+.notification.info {
+    background-color: #1a334a;
+    border-left: 4px solid #3498db;
+}
