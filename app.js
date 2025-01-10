@@ -497,7 +497,7 @@ app.get('/gemini', (req, res) => {
     res.sendFile('/public/gemini.html', {root: __dirname});
 });
 
-const genAI = new GoogleGenerativeAI('AIzaSyC3eW-SrlCDHjU5xT76GTXN164cNbFQEUA');
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // Update the gemini-chat endpoint
 app.post('/gemini-chat', async (req, res) => {
