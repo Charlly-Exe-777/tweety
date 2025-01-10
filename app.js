@@ -1,24 +1,42 @@
 import admin from 'firebase-admin';
-import serviceAccount from './firebaseAdminConfig.json' assert { type: 'json' };
 import express from 'express';
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import dotenv from 'dotenv';
 import rateLimit from 'express-rate-limit';
-import helmet from 'helmet';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://tweety-151d7-default-rtdb.europe-west1.firebasedatabase.app"
-});
+import helmet from 'helmet';
+import cors from 'cors'; // Add the cors package
 
 dotenv.config();
 
 const app = express();
 
+app.set('trust proxy', 1); // Trust the first proxy
+
+// Initialize Firebase Admin SDK with environment variables
+admin.initializeApp({
+    credential: admin.credential.cert({
+        "type": process.env.TYPE,
+        "project_id": process.env.PROJECT_ID,
+        "private_key_id": process.env.PRIVATE_KEY_ID,
+        "private_key": process.env.PRIVATE_KEY.replace(/\\n/g, '\n'), // Correct newline characters
+        "client_email": process.env.CLIENT_EMAIL,
+        "client_id": process.env.CLIENT_ID,
+        "auth_uri": process.env.AUTH_URI,
+        "token_uri": process.env.TOKEN_URI,
+        "auth_provider_x509_cert_url": process.env.AUTH_PROVIDER_X509_CERT_URL,
+        "client_x509_cert_url": process.env.CLIENT_X509_CERT_URL,
+    }),
+    databaseURL: "https://tweety-151d7-default-rtdb.europe-west1.firebasedatabase.app"
+});
+
+
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+// Remaining code remains unchanged...
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'js')));
@@ -44,7 +62,16 @@ app.use(helmet({
     crossOriginResourcePolicy: false
 }));
 
-// Simplify CORS headers
+// Configure CORS to allow requests from specific domains
+const corsOptions = {
+    origin: ['https://3000-charlly-exe-777-tweety-j64elonng4.app.codeanywhere.com', 'https://tweety-151d7.firebaseapp.com'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
+
+// Simplify CORS headers (if needed)
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', '*');
@@ -63,7 +90,7 @@ app.get('/', (req, res) => {
 
 app.get('/home', (req, res) => {
     res.sendFile('/public/home.html', {root: __dirname});
-  })
+})
   
 app.get('/profile', (req, res) => {
     res.sendFile('/public/profile.html', {root: __dirname});
@@ -204,8 +231,6 @@ app.post('/get-user-tweets', async (req, res) => {
     }
 });
 
-
-
 // like and dislike tweet.
 app.post('/like-or-dislike-tweet', async (req, res) => {
     const tweetID = req.body.postID;
@@ -282,7 +307,6 @@ app.post('/delete-post-by-id', async (req, res) => {
         });
     }
 });
-
 
 // get all users tweets to show it on the home page
 app.post('/all-users-tweets', async (req, res) => {
@@ -484,9 +508,9 @@ app.post('/gemini-chat', async (req, res) => {
         }
 
         await admin.auth().verifyIdToken(idToken);
-        
+
         // Use gemini-pro model with safety settings for free tier
-        const model = genAI.getGenerativeModel({ 
+        const model = genAI.getGenerativeModel({
             model: "gemini-pro",
             safetySettings: [
                 {
@@ -521,7 +545,7 @@ app.post('/gemini-chat', async (req, res) => {
 
             const response = await result.response;
             const text = response.text();
-            
+
             return res.status(200).json({
                 text: text,
                 type: text.includes('```') ? 'code' : 'text',
@@ -529,9 +553,9 @@ app.post('/gemini-chat', async (req, res) => {
             });
         } catch (genError) {
             console.error('Gemini generation error:', genError);
-            return res.status(500).json({ 
+            return res.status(500).json({
                 error: 'Failed to generate response',
-                details: genError.message 
+                details: genError.message
             });
         }
     } catch (error) {
