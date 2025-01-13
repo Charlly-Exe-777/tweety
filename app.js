@@ -12,7 +12,7 @@ dotenv.config();
 
 const app = express();
 
-app.set('trust proxy', 1); // Trust the first proxy
+// app.set('trust proxy', 1); // Trust the first proxy
 
 // Initialize Firebase Admin SDK with environment variables
 admin.initializeApp({
